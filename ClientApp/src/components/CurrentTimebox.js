@@ -31,14 +31,19 @@ class CurrentTimebox extends React.Component {
         this.stopTimer();
     }
     startTimer() {
-        this.intervalId = window.setInterval(
-            () => {
-                this.setState(
-                    prevState => ({ elapsedTimeInSeconds: prevState.elapsedTimeInSeconds + 0.1 })
-                )
-            },
-            100
-        );
+        if (this.elapsedTimeInSeconds >= 1) {
+            window.clearInterval(this.intervalId);
+        }
+        else {
+            this.intervalId = window.setInterval(
+                () => {
+                    this.setState(
+                        prevState => ({ elapsedTimeInSeconds: prevState.elapsedTimeInSeconds + 0.1 })
+                    )
+                },
+                100
+                );
+        }
     }
     stopTimer() {
         window.clearInterval(this.intervalId);
@@ -67,11 +72,23 @@ class CurrentTimebox extends React.Component {
         const minutesLeft = Math.floor(timeLeftInSeconds / 60);
         const secondsLeft = Math.floor(timeLeftInSeconds % 60);
         const progressInPercent = (elapsedTimeInSeconds / totalTimeInSeconds) * 100.0;
+
+        if (progressInPercent >= 10) {
+            this.togglePause(); //wywala po
+            //this.togglePause; błąd składni
+            //this.stopTimer();
+        }
+
         return (
             <div className={`CurrentTimebox ${isEditable ? "inactive" : ""}`}>
                 <h1>{title}</h1>
                 <Clock minutes={minutesLeft} seconds={secondsLeft} className={isPaused ? "inactive" : ""} />
-                <ProgressBar percent={progressInPercent} className={isPaused ? "inactive" : ""} />
+                <ProgressBar
+                    percent={progressInPercent}
+                    className={isPaused ? "inactive" : ""}
+                    color="red"
+                    big
+                />
                 <button onClick={onEdit} disabled={isEditable}>Edytuj</button>
                 <button onClick={this.handleStart} disabled={isRunning}>Start</button>
                 <button onClick={this.handleStop} disabled={!isRunning}>Stop</button>
@@ -79,6 +96,7 @@ class CurrentTimebox extends React.Component {
                 Liczba przerw: {pausesCount}
             </div>
         )
+
     }
 }
 
