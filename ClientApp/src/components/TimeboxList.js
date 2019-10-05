@@ -1,6 +1,7 @@
 ﻿import React from "react";
 import TimeboxCreator from "./TimeboxCreator";
 import Timebox from "./Timebox";
+import ErrorBoundaries from "./ErrorBoundaries";
 
 class TimeboxList extends React.Component {
     state = {
@@ -8,9 +9,9 @@ class TimeboxList extends React.Component {
             { id: "a", title: "Uczę się CSS in JS", totalTimeInMinutes: 25 },
             { id: "b", title: "Uczę się SASS", totalTimeInMinutes: 15 },
             { id: "c", title: "Uczę się BEM", totalTimeInMinutes: 5 },
-        ]
+        ],
+        hasError: false
     }
-
     addTimebox = (timebox) => {
         this.setState(prevState => {
             const timeboxes = [timebox, ...prevState.timeboxes];
@@ -33,22 +34,32 @@ class TimeboxList extends React.Component {
     }
 
     handleCreate = (createdTimebox) => {
-        this.addTimebox(createdTimebox);
+        try {
+            this.addTimebox(createdTimebox);
+        } catch (error) {
+            console.log("Jest błąd podczas tworzenia Timebox-a", error);
+            this.setState({ hasError: true });
+        }
     }
     render() {
         return (
-            <div>
+            <>
                 <TimeboxCreator onCreate={this.handleCreate} />
-                {this.state.timeboxes.map((timebox, index) => (
-                    <Timebox
-                        key={timebox.id}
-                        title={timebox.title}
-                        totalTimeInMinutes={timebox.totalTimeInMinutes}
-                        onDelete={() => this.removeTimebox(index)}
-                        onEdit={() => this.updateTimebox(index, { ...timebox, title: "Updated timebox" })}
-                    />
-                ))}
-            </div>
+                <ErrorBoundaries message="Cos sie wykrzaczyło w liście..." >
+                {
+                    this.state.timeboxes.map((timebox, index) => (
+                        <ErrorBoundaries key={timebox.id} message="Cos sie wykrzaczyło w timebox-ie..." >
+                            <Timebox
+                                title={timebox.title}
+                                totalTimeInMinutes={timebox.totalTimeInMinutes}
+                                onDelete={() => this.removeTimebox(index)}
+                                onEdit={() => this.updateTimebox(index, { ...timebox, title: "Updated timebox" })}
+                            />
+                        </ErrorBoundaries>
+                    ))
+                }
+                </ErrorBoundaries>
+            </>
         )
     }
 }

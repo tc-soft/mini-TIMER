@@ -6,8 +6,8 @@ import CurrentTimebox from "./CurrentTimebox";
 class EditableTimebox extends React.Component {
     state = {
         title: "Uczę się CSS!",
-        totalTimeInMinutes: 20,
-        isEditable: true
+        totalTimeInMinutes: 1,
+        isEditable: false
     }
     handleTitleChange = (event) => {
         this.setState({ title: event.target.value });
@@ -24,22 +24,27 @@ class EditableTimebox extends React.Component {
     render() {
         const { title, totalTimeInMinutes, isEditable } = this.state;
         return (
-            <div>
-                <TimeboxEditor
-                    title={title}
-                    totalTimeInMinutes={totalTimeInMinutes}
-                    isEditable={isEditable}
-                    onConfirm={this.handleConfirm}
-                    onTitleChange={this.handleTitleChange}
-                    onTotalTimeInMinutesChange={this.handleTotalTimeInMinutesChange}
-                />
-                <CurrentTimebox
-                    isEditable={isEditable}
-                    title={title}
-                    totalTimeInMinutes={totalTimeInMinutes}
-                    onEdit={this.handleEdit}
-                />
-            </div>
+            <>
+                <React.StrictMode>
+                    {isEditable ? (
+                        <TimeboxEditor
+                            title={title}
+                            totalTimeInMinutes={totalTimeInMinutes}
+                            isEditable={isEditable}
+                            onConfirm={this.handleConfirm}
+                            onTitleChange={this.handleTitleChange}
+                            onTotalTimeInMinutesChange={this.handleTotalTimeInMinutesChange}
+                        />
+                    ) : (
+                            <CurrentTimebox
+                                isEditable={isEditable}
+                                title={title}
+                                totalTimeInMinutes={totalTimeInMinutes}
+                                onEdit={this.handleEdit}
+                            />
+                            )}
+                </React.StrictMode>
+            </>
         )
     }
 }
