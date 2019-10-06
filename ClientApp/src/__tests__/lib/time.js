@@ -1,6 +1,6 @@
 ﻿import { getMinutesAndSecondsFromDurationInSeconds } from "../../lib/time"
 
-
+//Wykorzystujemy test JEST
 describe("getMinutesAndSecondsFromDurationInSeconds", () => {
 
     describe("for durations shorter than one minute", () => {

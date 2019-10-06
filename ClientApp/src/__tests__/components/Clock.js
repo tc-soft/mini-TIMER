@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import renderer from "react-test-renderer"
 import Clock from "../../components/Clock";
 
+//Wykorzystaliśmy ReactTestRenderer i DOM
+
 var root = null;
 var clockRenderer = null;
 describe("<Clock />", () => {
@@ -38,7 +40,7 @@ describe("<Clock />", () => {
             
         })
 
-        it("renders an h2 element", () => {
+        it("renders properly", () => {
             expect(clockRenderer.toJSON()).toMatchSnapshot();
         })
 

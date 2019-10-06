@@ -18,6 +18,7 @@ function TimeboxEditor(props) {
                     value={title}
                     onChange={onTitleChange}
                     type="text"
+                    data-testid="labelInput"
                 />
             </label><br />
             <label>

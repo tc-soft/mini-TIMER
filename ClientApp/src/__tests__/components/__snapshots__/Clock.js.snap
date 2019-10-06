@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Clock /> when given minutes and seconds (TestRenderer) renders an h2 element 1`] = `
+exports[`<Clock /> when given minutes and seconds (TestRenderer) renders properly 1`] = `
 <h2
   className="Clock "
 >
